@@ -2,8 +2,7 @@ import Booking from "../models/Booking.js";
 
 // Crear una nueva reserva
 export const createBooking = async (req, res) => {
-  const { clientId, professionalId, publicationId, bookingDate, totalAmount } =
-    req.body;
+  const { clientId, professionalId, publicationId, bookingDate } = req.body;
 
   try {
     const newBooking = new Booking({
@@ -11,7 +10,6 @@ export const createBooking = async (req, res) => {
       professionalId,
       publicationId,
       bookingDate,
-      totalAmount,
     });
     await newBooking.save();
     res.status(201).json({
@@ -64,7 +62,7 @@ export const getBookingsByUserId = async (req, res) => {
 // Actualizar una reserva por ID
 export const updateBookingById = async (req, res) => {
   const { id } = req.params;
-  const { status, bookingDate, totalAmount } = req.body;
+  const { status, bookingDate } = req.body;
 
   try {
     const booking = await Booking.findById(id);
@@ -77,7 +75,6 @@ export const updateBookingById = async (req, res) => {
       booking.status = status;
     }
     if (bookingDate !== undefined) booking.bookingDate = bookingDate;
-    if (totalAmount !== undefined) booking.totalAmount = totalAmount;
 
     await booking.save();
     res

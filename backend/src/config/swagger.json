@@ -629,8 +629,7 @@
                   "clientId",
                   "professionalId",
                   "publicationId",
-                  "bookingDate",
-                  "totalAmount"
+                  "bookingDate"
                 ],
                 "properties": {
                   "clientId": {
@@ -649,10 +648,6 @@
                     "type": "string",
                     "format": "date-time",
                     "description": "Fecha y hora de la reserva"
-                  },
-                  "totalAmount": {
-                    "type": "number",
-                    "description": "Monto total de la reserva"
                   }
                 }
               }
@@ -782,10 +777,6 @@
                     "type": "string",
                     "format": "date-time",
                     "description": "Nueva fecha y hora de la reserva"
-                  },
-                  "totalAmount": {
-                    "type": "number",
-                    "description": "Nuevo monto total de la reserva"
                   }
                 }
               }
@@ -923,10 +914,6 @@
             "type": "string",
             "description": "Estado de la reserva",
             "enum": ["pendiente", "completado", "cancelado"]
-          },
-          "totalAmount": {
-            "type": "number",
-            "description": "Monto total de la reserva"
           }
         }
       }

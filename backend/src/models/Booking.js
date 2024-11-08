@@ -26,10 +26,6 @@ const BookingSchema = new Schema(
       enum: ["pendiente", "completado", "cancelado"],
       default: "pendiente",
     },
-    totalAmount: {
-      type: Number,
-      required: true,
-    },
   },
   {
     timestamps: true, // Añade `createdAt` y `updatedAt`
