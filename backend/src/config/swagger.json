@@ -382,6 +382,233 @@
           }
         }
       }
+    },
+    "/api/publications": {
+      "post": {
+        "summary": "Crear una nueva publicación",
+        "tags": ["Publications"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "professionalId",
+                  "name",
+                  "description",
+                  "price",
+                  "category"
+                ],
+                "properties": {
+                  "professionalId": {
+                    "type": "string",
+                    "description": "ID del profesional que crea la publicación"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "Nombre de la publicación"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Descripción detallada de la publicación"
+                  },
+                  "price": {
+                    "type": "number",
+                    "description": "Precio del servicio o producto"
+                  },
+                  "category": {
+                    "type": "string",
+                    "description": "Categoría de la publicación"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Publicación creada exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Publication"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error al crear la publicación"
+          }
+        }
+      },
+      "get": {
+        "summary": "Obtener todas las publicaciones activas",
+        "tags": ["Publications"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de publicaciones activas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Publication"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error al obtener las publicaciones"
+          }
+        }
+      }
+    },
+    "/api/publications/{id}": {
+      "get": {
+        "summary": "Obtener una publicación por ID",
+        "tags": ["Publications"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID de la publicación a obtener"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalles de la publicación",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Publication"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Publicación no encontrada"
+          },
+          "500": {
+            "description": "Error al obtener la publicación"
+          }
+        }
+      },
+      "put": {
+        "summary": "Actualizar una publicación por ID",
+        "tags": ["Publications"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID de la publicación a actualizar"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Nuevo nombre de la publicación"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Nueva descripción de la publicación"
+                  },
+                  "price": {
+                    "type": "number",
+                    "description": "Nuevo precio del servicio o producto"
+                  },
+                  "category": {
+                    "type": "string",
+                    "description": "Nueva categoría de la publicación"
+                  },
+                  "status": {
+                    "type": "string",
+                    "description": "Estado de la publicación",
+                    "enum": ["active", "paused", "deleted"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Publicación actualizada exitosamente"
+          },
+          "404": {
+            "description": "Publicación no encontrada"
+          },
+          "500": {
+            "description": "Error al actualizar la publicación"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Eliminar lógicamente una publicación por ID",
+        "tags": ["Publications"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID de la publicación a eliminar"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Publicación eliminada exitosamente"
+          },
+          "404": {
+            "description": "Publicación no encontrada"
+          },
+          "500": {
+            "description": "Error al eliminar la publicación"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -437,6 +664,36 @@
               }
             },
             "description": "Lista de calificaciones y comentarios de los clientes"
+          }
+        }
+      },
+      "Publication": {
+        "type": "object",
+        "properties": {
+          "professionalId": {
+            "type": "string",
+            "description": "ID del profesional que creó la publicación"
+          },
+          "name": {
+            "type": "string",
+            "description": "Nombre de la publicación"
+          },
+          "description": {
+            "type": "string",
+            "description": "Descripción de la publicación"
+          },
+          "price": {
+            "type": "number",
+            "description": "Precio del servicio o producto"
+          },
+          "category": {
+            "type": "string",
+            "description": "Categoría de la publicación"
+          },
+          "status": {
+            "type": "string",
+            "description": "Estado de la publicación",
+            "enum": ["active", "paused", "deleted"]
           }
         }
       }
