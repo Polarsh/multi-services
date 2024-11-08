@@ -559,7 +559,7 @@
                   "status": {
                     "type": "string",
                     "description": "Estado de la publicación",
-                    "enum": ["active", "paused", "deleted"]
+                    "enum": ["activo", "pausado", "borrado"]
                   }
                 }
               }
@@ -606,6 +606,208 @@
           },
           "500": {
             "description": "Error al eliminar la publicación"
+          }
+        }
+      }
+    },
+    "/api/bookings": {
+      "post": {
+        "summary": "Crear una nueva reserva",
+        "tags": ["Bookings"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "clientId",
+                  "professionalId",
+                  "publicationId",
+                  "bookingDate",
+                  "totalAmount"
+                ],
+                "properties": {
+                  "clientId": {
+                    "type": "string",
+                    "description": "ID del cliente que realiza la reserva"
+                  },
+                  "professionalId": {
+                    "type": "string",
+                    "description": "ID del profesional para la reserva"
+                  },
+                  "publicationId": {
+                    "type": "string",
+                    "description": "ID de la publicación asociada a la reserva"
+                  },
+                  "bookingDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Fecha y hora de la reserva"
+                  },
+                  "totalAmount": {
+                    "type": "number",
+                    "description": "Monto total de la reserva"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Reserva creada exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Booking"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error al crear la reserva"
+          }
+        }
+      },
+      "get": {
+        "summary": "Obtener todas las reservas",
+        "tags": ["Bookings"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de todas las reservas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Booking"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error al obtener las reservas"
+          }
+        }
+      }
+    },
+    "/api/bookings/user/{userId}": {
+      "get": {
+        "summary": "Obtener reservas por userId",
+        "tags": ["Bookings"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID del usuario para obtener las reservas"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de reservas del usuario especificado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Booking"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No se encontraron reservas para el usuario especificado"
+          },
+          "500": {
+            "description": "Error al obtener las reservas"
+          }
+        }
+      }
+    },
+    "/api/bookings/{id}": {
+      "put": {
+        "summary": "Actualizar una reserva por ID",
+        "tags": ["Bookings"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "ID de la reserva a actualizar"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "description": "Nuevo estado de la reserva",
+                    "enum": ["pendiente", "completado", "cancelado"]
+                  },
+                  "bookingDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Nueva fecha y hora de la reserva"
+                  },
+                  "totalAmount": {
+                    "type": "number",
+                    "description": "Nuevo monto total de la reserva"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Reserva actualizada exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Booking"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Reserva no encontrada"
+          },
+          "500": {
+            "description": "Error al actualizar la reserva"
           }
         }
       }
@@ -693,7 +895,38 @@
           "status": {
             "type": "string",
             "description": "Estado de la publicación",
-            "enum": ["active", "paused", "deleted"]
+            "enum": ["activo", "pausado", "borrado"]
+          }
+        }
+      },
+      "Booking": {
+        "type": "object",
+        "properties": {
+          "clientId": {
+            "type": "string",
+            "description": "ID del cliente que realiza la reserva"
+          },
+          "professionalId": {
+            "type": "string",
+            "description": "ID del profesional para la reserva"
+          },
+          "publicationId": {
+            "type": "string",
+            "description": "ID de la publicación asociada a la reserva"
+          },
+          "bookingDate": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Fecha y hora de la reserva"
+          },
+          "status": {
+            "type": "string",
+            "description": "Estado de la reserva",
+            "enum": ["pendiente", "completado", "cancelado"]
+          },
+          "totalAmount": {
+            "type": "number",
+            "description": "Monto total de la reserva"
           }
         }
       }
