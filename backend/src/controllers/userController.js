@@ -42,7 +42,8 @@ export const getUserById = async (req, res) => {
 // Actualizar usuario por ID
 export const updateUserById = async (req, res) => {
   const { id } = req.params;
-  const { name, phone, specialties, availability } = req.body;
+
+  const { name, phone, specialties } = req.body;
   try {
     const user = await User.findOne({ _id: id, status: "active" });
     if (!user) {
@@ -50,11 +51,10 @@ export const updateUserById = async (req, res) => {
     }
 
     // Actualizamos los campos disponibles
-    if (name) user.name = name;
-    if (phone) user.phone = phone;
-    if (user.userType === "profesional") {
+    if (name !== undefined) user.name = name;
+    if (phone !== undefined) user.phone = phone;
+    if (user.userType === "profesional" && specialties !== undefined) {
       if (specialties) user.specialties = specialties;
-      if (availability !== undefined) user.availability = availability;
     }
 
     await user.save();
