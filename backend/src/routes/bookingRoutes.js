@@ -1,11 +1,15 @@
 import express from "express";
 import {
+  createBooking,
   getAllBookings,
   getBookingsByUserId,
   updateBookingById,
 } from "../controllers/bookingController.js";
 
 const router = express.Router();
+
+// Crear una nueva reserva
+router.post("/", createBooking);
 
 // Obtener todas las reservas
 router.get("/", getAllBookings);
