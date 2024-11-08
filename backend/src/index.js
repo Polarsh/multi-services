@@ -9,6 +9,7 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import publicationRoutes from "./routes/publicationRoutes.js";
+import bookingRoutes from "./routes/bookingRoutes.js";
 
 // Configuración
 dotenv.config();
@@ -28,6 +29,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/publications", publicationRoutes);
+app.use("/api/bookings", bookingRoutes);
 
 // Iniciar el servidor
 app.listen(PORT, () => {
