@@ -25,8 +25,8 @@ const PublicationSchema = new Schema(
     },
     status: {
       type: String,
-      enum: ["active", "paused", "deleted"],
-      default: "active",
+      enum: ["activo", "pausado", "borrado"],
+      default: "activo",
     },
   },
   {

@@ -25,7 +25,7 @@ export const createPublication = async (req, res) => {
 // Obtener todas las publicaciones activas
 export const getAllPublications = async (req, res) => {
   try {
-    const publications = await Publication.find({ status: "active" });
+    const publications = await Publication.find({ status: "activo" });
     res.status(200).json(publications);
   } catch (error) {
     res.status(500).json({ error: "Error al obtener las publicaciones" });
@@ -38,7 +38,7 @@ export const getPublicationById = async (req, res) => {
 
   try {
     const publication = await Publication.findById(id);
-    if (!publication || publication.status === "deleted") {
+    if (!publication || publication.status === "borrado") {
       return res.status(404).json({ error: "Publicación no encontrada" });
     }
     res.status(200).json(publication);
@@ -54,7 +54,7 @@ export const updatePublicationById = async (req, res) => {
 
   try {
     const publication = await Publication.findById(id);
-    if (!publication || publication.status === "deleted") {
+    if (!publication || publication.status === "borrado") {
       return res.status(404).json({ error: "Publicación no encontrada" });
     }
 
@@ -65,7 +65,7 @@ export const updatePublicationById = async (req, res) => {
     if (category !== undefined) publication.category = category;
     if (
       status !== undefined &&
-      ["active", "paused", "deleted"].includes(status)
+      ["activo", "pausado", "borrado"].includes(status)
     ) {
       publication.status = status;
     }
@@ -83,11 +83,11 @@ export const deletePublicationById = async (req, res) => {
 
   try {
     const publication = await Publication.findById(id);
-    if (!publication || publication.status === "deleted") {
+    if (!publication || publication.status === "borrado") {
       return res.status(404).json({ error: "Publicación no encontrada" });
     }
 
-    publication.status = "deleted";
+    publication.status = "borrado";
     await publication.save();
     res.status(200).json({ message: "Publicación eliminada exitosamente" });
   } catch (error) {

@@ -11,7 +11,7 @@ export const registerUser = async (req, res) => {
       email,
       password: hashedPassword,
       userType,
-      status: "active",
+      status: "activo",
     });
     await newUser.save();
     res.status(201).json({ message: "Usuario registrado exitosamente" });
